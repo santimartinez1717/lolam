@@ -1,0 +1,40 @@
+[project]
+name = "lolam"
+version = "0.1.0"
+description = "¿Dónde vive la capacidad de un LLM? Mapas geométricos, RL y weight-space programming en LLMs pequeños."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = "Apache-2.0"
+dependencies = [
+    "datasets>=3.0",
+    "math-verify>=0.7",
+    "sympy>=1.13",
+    "numpy>=1.26",
+    "safetensors>=0.4",
+    "huggingface-hub>=0.30",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# Solo en el cluster (Linux + CUDA). En el Mac se trabaja sin esto.
+gpu = [
+    "vllm>=0.33; sys_platform == 'linux'",
+    "transformers>=5.20.2",
+    "torch",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[project.scripts]
+lolam-eval = "lolam.eval.run:main"
+lolam-summary = "lolam.eval.summarize:main"
+lolam-throughput = "lolam.bench.throughput:main"
+lolam-wsp-diff = "lolam.wsp.diff:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
