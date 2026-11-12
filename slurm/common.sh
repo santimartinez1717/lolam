@@ -1,7 +1,9 @@
 # Entorno común para todos los jobs. Se carga con `source slurm/common.sh`.
 set -euo pipefail
 
-export LOLAM_ROOT="${LOLAM_ROOT:-${SLURM_SUBMIT_DIR:-$PWD}}"
+# Raíz del repo a partir de la ubicación de este fichero (vale con sbatch y en la sesión
+# interactiva de VS Code, donde SLURM_SUBMIT_DIR apunta a otro sitio).
+export LOLAM_ROOT="${LOLAM_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 cd "$LOLAM_ROOT"
 
 # Cachés en el RAID grande (no en /tmp, que se borra al acabar el job).
