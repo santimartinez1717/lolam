@@ -5,6 +5,12 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+if [ "$(uname -s)" != "Linux" ] || ! command -v nvidia-smi >/dev/null; then
+  echo "Este script es para el nodo con GPU del cluster (Linux + NVIDIA). Aquí no hay GPU." >&2
+  echo "En local basta con: uv sync && uv run pytest" >&2
+  exit 1
+fi
+
 export UV_CACHE_DIR="${UV_CACHE_DIR:-$HOME/.cache/uv}"
 export HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}"
 
